@@ -49,6 +49,7 @@ $(document).ready(function () {
     var isTimerRunning = false;
     var questionCount = questions.length;
     var intervalid;
+    var index;
 
 
 
@@ -77,7 +78,7 @@ $(document).ready(function () {
     //create decrementer function that displays time on page
     function decrement() {
         time--;
-        $(".time").html("Tick Tock! " + time);
+        $(".time").html("<h2> Tick Tock! " + time + "</h2>");
 
         if (time === 0) {
             incorrect++;
@@ -98,8 +99,8 @@ $(document).ready(function () {
     //create a function to display questions on the page
     function questionDisplay() {
         //randomize questions
-        var i = Math.floor(Math.random() * questions.length);
-        choice = questions[i];
+        index = Math.floor(Math.random() * questions.length);
+        choice = questions[index];
 
         $(".questionsDisplay").html(choice.question);
         for (var i = 0; i < choice.options.length; i++) {
@@ -110,7 +111,7 @@ $(document).ready(function () {
             $(".answers").append(userGuess);
         }
 
-        };
+        
 
         //on click function for answers
         $(".answerChosen").on("click", function (){
@@ -130,12 +131,50 @@ $(document).ready(function () {
                 $(".answers").html("Loser!");
                 hideGif();
             }
-        })
+        });
+        }
 
         //create a function to hide gifs
-        function hideGif() {
+        function hideGif () {
+            $(".answers").append("<img src" + choice.photo + ">");
+            choiceArr.push(choice);
+            questions.splice(index,1);
+
+            var hidePicture = setTimeout(function() {
+                $(".answers").empty();
+                time = 30;
+
+                //if all questions are answered, show scores
+                if ((incorrect + correct) === questionCount) {
+                    $(".questionsDisplay").empty();
+                    $(".questionsDisplay").html("The End!");
+                    $(".answers").append("Correct: " + correct)
+                    $(".answers").append("Incorrect: " + incorrect)
+                    $("#reset").show();
+                    correct =0;
+                    incorrect =0;
+                }
+                //if there are more questions
+                else {
+                    startTime();
+                    questionDisplay();
+                }
+
             
-        }
+            }, 3000)
+        };
+
+        $("#reset").on("click", function() {
+            $("#reset").hide();
+            $(".answers").empty();
+            $(".questionsDisplay").empty();
+            for (var i =0; i < gameArr.length; i++ ) {
+                questions.push(gameArr[i]);
+            }
+            startTime();
+            questionDisplay();
+
+        })
 
     });
 

@@ -48,6 +48,8 @@ $(document).ready(function () {
     var gameArr = [];
     var isTimerRunning = false;
     var questionCount = questions.length;
+    var intervalid;
+
 
 
 
@@ -57,14 +59,63 @@ $(document).ready(function () {
     //create click event to start game
     $("#start").on("click", function () {
         $("#start").hide();
+        questionDisplay();
+        startTime();
+        for (var i = 0; i < questions.length; i++) {
+            gameArr.push(questions[i]);
+        }
     })
 
     //create a function to start countdown
-    function startTime () {
+    function startTime() {
         if (isTimerRunning = false) {
-            var intervalid = setInterval(decrement 1000)
+            intervalid = setInterval(decrement, 1000)
+            isTimerRunning = true;
         }
     }
 
-});
+    //create decrementer function that displays time on page
+    function decrement() {
+        time--;
+        $(".time").html("Tick Tock! " + time);
+
+        if (time === 0) {
+            incorrect++;
+            stop();
+            $(".answers").html("<p> Loser! The Answer is: " + choice.questions.options + "</p>");
+            hideGif();
+        }
+
+
+    };
+
+    //create function to stop the clock
+    function stop() {
+        isTimerRunning = false;
+        clearInterval(intervalid);
+    };
+
+    //create a function to display questions on the page
+    function questionDisplay() {
+        //randomize questions
+        var i = Math.floor(Math.random() * questions.length);
+        choice = questions[i];
+
+        $(".questionsDisplay").html(choice.question);
+        for (var i = 0; i < choice.options.length; i++) {
+            var userGuess = $("<div>");
+            userGuess.addClass("answerChosen");
+            userGuess.html(choice.options[i]);
+            userGuess.attr("data-guessvalue", i);
+            $(".answers").append(userGuess);
+        }
+
+        };
+
+        //on click function for answers
+        $(".answerChosen").on("click", function (){
+            userChoice
+        })
+
+    });
 

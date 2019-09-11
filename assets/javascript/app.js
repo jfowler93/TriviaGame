@@ -114,8 +114,28 @@ $(document).ready(function () {
 
         //on click function for answers
         $(".answerChosen").on("click", function (){
-            userChoice
+            userChoice = parseInt($(this).attr("data-guessvalue"));
+
+            if (userChoice === choice.answer) {
+                stop();
+                correct++;
+                userChoice="";
+                $(".answers").html("Nailed it!");
+                hideGif();
+            }
+
+            else {
+                stop();
+                incorrect++;
+                $(".answers").html("Loser!");
+                hideGif();
+            }
         })
+
+        //create a function to hide gifs
+        function hideGif() {
+            
+        }
 
     });
 

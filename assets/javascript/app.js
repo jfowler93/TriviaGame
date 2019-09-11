@@ -7,35 +7,35 @@ $(document).ready(function () {
             //separate array for answer choices
             options: ["Cheese", "Fight Milk", "Milk Steak", "Sewage Crabs"],
             answer: 2,
-            gif: "assets/images/ghouls.gif"
+            pic: "assets/images/ghouls.gif"
         },
         {
             question: "Who is the Real Father of Dee and Dennis?",
             //separate array for answer choices
             options: ["Bruce Mathis", "Frank Reynolds", "Mr. Mac", "Doyle McPoyle"],
             answer: 0,
-            gif: "assets/images/frank.gif"
+            pic: "assets/images/frank.gif"
         },
         {
             question: "To Whom Does the Nightman Have to Pay a Toll to get to the Boy's Soul?",
             //separate array for answer choices
             options: ["Sweet Dee", "The Troll", "Bill Ponderosa", "Dayman"],
             answer: 1,
-            gif: "assets/images/troll.gif"
+            pic: "assets/images/troll.gif"
         },
         {
             question: "What is Charlie's Designation Within the Gang?",
             //separate array for answer choices
             options: ["The Looks", "The Brains", "The Big Cheese", "The Wild Card"],
             answer: 3,
-            gif: "assets/images/wild.gif"
+            pic: "assets/images/wild.gif"
         },
         {
             question: "What Kind of Man is Dennis?",
             //separate array for answer choices
             options: ["A One Star Man", "A Loser", "A FIVE STAR MAN", "Nice Guy"],
             answer: 2,
-            gif: "assets/images/fivestar.gif"
+            pic: "assets/images/fivestar.gif"
         }
     ];
     //declare variables
@@ -69,21 +69,87 @@ $(document).ready(function () {
 
     //create a function to start countdown
     function startTime() {
-        if (isTimerRunning = false) {
+        if (!isTimerRunning) {
             intervalid = setInterval(decrement, 1000)
             isTimerRunning = true;
         }
-    }
+    };
+ //create a function to display questions on the page
+ function questionDisplay() {
+    //randomize questions
+    index = Math.floor(Math.random() * questions.length);
+    choice = questions[index];
 
+    $(".questionsDisplay").html(choice.question);
+    for (var i = 0; i < choice.options.length; i++) {
+        var userGuess = $("<div>");
+        userGuess.addClass("answerChosen");
+        userGuess.html(choice.options[i]);
+        userGuess.attr("data-guessvalue", i);
+        $(".answers").append(userGuess);
+    };
+
+    
+
+    //on click function for answers
+    $(".answerChosen").on("click", function (){
+        userChoice = parseInt($(this).attr("data-guessvalue"));
+
+        if (userChoice === choice.answer) {
+            stop();
+            correct++;
+            userChoice="";
+            $(".answers").html("Nailed it!");
+            hideGif();
+        }
+
+        else {
+            stop();
+            incorrect++;
+            $(".answers").html("Loser!");
+            hideGif();
+        };
+    });
+    };
+    //create a function to hide gifs
+    function hideGif () {
+        $(".answers").append("<img src" + questions.pic + ">");
+        choiceArr.push(choice);
+        questions.splice(index,1);
+
+        var hidePicture = setTimeout(function() {
+            $(".answers").empty();
+            time = 30;
+
+            //if all questions are answered, show scores
+            if ((incorrect + correct) === questionCount) {
+                $(".questionsDisplay").empty();
+                $(".questionsDisplay").html("The End!");
+                $(".answers").append("Correct: " + correct)
+                $(".answers").append("Incorrect: " + incorrect)
+                $("#reset").show();
+                correct =0;
+                incorrect =0;
+            }
+            //if there are more questions
+            else {
+                startTime();
+                questionDisplay();
+            };
+
+        
+        }, 3000)
+    };
     //create decrementer function that displays time on page
     function decrement() {
         time--;
-        $(".time").html("<h2> Tick Tock! " + time + "</h2>");
+        $("#timer").html("Tick Tock! " + time );
+        
 
         if (time === 0) {
             incorrect++;
             stop();
-            $(".answers").html("<p> Loser! The Answer is: " + choice.questions.options + "</p>");
+            $(".answers").html("<p> Loser! The Answer is: " + choice.questions.answer + "</p>");
             hideGif();
         }
 
@@ -96,73 +162,9 @@ $(document).ready(function () {
         clearInterval(intervalid);
     };
 
-    //create a function to display questions on the page
-    function questionDisplay() {
-        //randomize questions
-        index = Math.floor(Math.random() * questions.length);
-        choice = questions[index];
-
-        $(".questionsDisplay").html(choice.question);
-        for (var i = 0; i < choice.options.length; i++) {
-            var userGuess = $("<div>");
-            userGuess.addClass("answerChosen");
-            userGuess.html(choice.options[i]);
-            userGuess.attr("data-guessvalue", i);
-            $(".answers").append(userGuess);
-        }
+   
 
         
-
-        //on click function for answers
-        $(".answerChosen").on("click", function (){
-            userChoice = parseInt($(this).attr("data-guessvalue"));
-
-            if (userChoice === choice.answer) {
-                stop();
-                correct++;
-                userChoice="";
-                $(".answers").html("Nailed it!");
-                hideGif();
-            }
-
-            else {
-                stop();
-                incorrect++;
-                $(".answers").html("Loser!");
-                hideGif();
-            }
-        });
-        }
-
-        //create a function to hide gifs
-        function hideGif () {
-            $(".answers").append("<img src" + choice.photo + ">");
-            choiceArr.push(choice);
-            questions.splice(index,1);
-
-            var hidePicture = setTimeout(function() {
-                $(".answers").empty();
-                time = 30;
-
-                //if all questions are answered, show scores
-                if ((incorrect + correct) === questionCount) {
-                    $(".questionsDisplay").empty();
-                    $(".questionsDisplay").html("The End!");
-                    $(".answers").append("Correct: " + correct)
-                    $(".answers").append("Incorrect: " + incorrect)
-                    $("#reset").show();
-                    correct =0;
-                    incorrect =0;
-                }
-                //if there are more questions
-                else {
-                    startTime();
-                    questionDisplay();
-                }
-
-            
-            }, 3000)
-        };
 
         $("#reset").on("click", function() {
             $("#reset").hide();
@@ -174,7 +176,7 @@ $(document).ready(function () {
             startTime();
             questionDisplay();
 
-        })
+        });
 
     });
 

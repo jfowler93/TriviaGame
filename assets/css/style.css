@@ -3,6 +3,7 @@
     color: white;
 }
 
-.gamePlay {
-    width: 80%;
+#timer {
+    font-weight: bolder;
+    
 }

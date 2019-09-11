@@ -5,5 +5,10 @@
 
 #timer {
     font-weight: bolder;
-    
+
+}
+
+.questionsDisplay {
+    font-size: 40px;
+    font-family: 'lobster', cursive;
 }

@@ -99,21 +99,21 @@ $(document).ready(function () {
             stop();
             correct++;
             userChoice="";
-            $(".answers").html("Nailed it!");
+            $(".trueFalse").html("Nailed it!");
             hideGif();
         }
 
         else {
             stop();
             incorrect++;
-            $(".answers").html("Loser!");
+            $(".trueFalse").html("<p> Loser! The Answer is: " + choice.options[choice.answer] + "</p>");
             hideGif();
         };
     });
     };
     //create a function to hide gifs
     function hideGif () {
-        $(".answers").append("<img src" + questions.pic + ">");
+        $(".answers").append("<img src=" + choice.pic + ">");
         choiceArr.push(choice);
         questions.splice(index,1);
 
@@ -125,8 +125,8 @@ $(document).ready(function () {
             if ((incorrect + correct) === questionCount) {
                 $(".questionsDisplay").empty();
                 $(".questionsDisplay").html("The End!");
-                $(".answers").append("Correct: " + correct)
-                $(".answers").append("Incorrect: " + incorrect)
+                $(".trueFalse").append("<p> Correct: " + correct + "</p>")
+                $(".trueFalse").append("<p> Incorrect: " + incorrect + "</p>")
                 $("#reset").show();
                 correct =0;
                 incorrect =0;
@@ -149,7 +149,7 @@ $(document).ready(function () {
         if (time === 0) {
             incorrect++;
             stop();
-            $(".answers").html("<p> Loser! The Answer is: " + choice.questions.answer + "</p>");
+            $(".trueFalse").html("<p> Loser! The Answer is: " + choice.answer + "</p>");
             hideGif();
         }
 
@@ -175,6 +175,7 @@ $(document).ready(function () {
             }
             startTime();
             questionDisplay();
+            $(".trueFalse").hide();
 
         });
 

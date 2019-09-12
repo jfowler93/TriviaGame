@@ -57,6 +57,8 @@ $(document).ready(function () {
     console.log(questionCount);
     //hide the egg button
     $("#reset").hide();
+    var audio = new Audio('audio.mp3');
+    audio.play();
     //create click event to start game
     $("#start").on("click", function () {
         $("#start").hide();
@@ -74,50 +76,50 @@ $(document).ready(function () {
             isTimerRunning = true;
         }
     };
- //create a function to display questions on the page
- function questionDisplay() {
-    //randomize questions
-    index = Math.floor(Math.random() * questions.length);
-    choice = questions[index];
+    //create a function to display questions on the page
+    function questionDisplay() {
+        //randomize questions
+        index = Math.floor(Math.random() * questions.length);
+        choice = questions[index];
 
-    $(".questionsDisplay").html(choice.question);
-    for (var i = 0; i < choice.options.length; i++) {
-        var userGuess = $("<div>");
-        userGuess.addClass("answerChosen");
-        userGuess.html(choice.options[i]);
-        userGuess.attr("data-guessvalue", i);
-        $(".answers").append(userGuess);
-    };
-
-    
-
-    //on click function for answers
-    $(".answerChosen").on("click", function (){
-        userChoice = parseInt($(this).attr("data-guessvalue"));
-
-        if (userChoice === choice.answer) {
-            stop();
-            correct++;
-            userChoice="";
-            $(".trueFalse").html("Nailed it!");
-            hideGif();
-        }
-
-        else {
-            stop();
-            incorrect++;
-            $(".trueFalse").html("<p> Loser! The Answer is: " + choice.options[choice.answer] + "</p>");
-            hideGif();
+        $(".questionsDisplay").html(choice.question);
+        for (var i = 0; i < choice.options.length; i++) {
+            var userGuess = $("<div>");
+            userGuess.addClass("answerChosen");
+            userGuess.html(choice.options[i]);
+            userGuess.attr("data-guessvalue", i);
+            $(".answers").append(userGuess);
         };
-    });
+
+
+
+        //on click function for answers
+        $(".answerChosen").on("click", function () {
+            userChoice = parseInt($(this).attr("data-guessvalue"));
+
+            if (userChoice === choice.answer) {
+                stop();
+                correct++;
+                userChoice = "";
+                $(".trueFalse").html("Nailed it!");
+                hideGif();
+            }
+
+            else {
+                stop();
+                incorrect++;
+                $(".trueFalse").html("<p> Loser! The Answer is: " + choice.options[choice.answer] + "</p>");
+                hideGif();
+            };
+        });
     };
     //create a function to hide gifs
-    function hideGif () {
+    function hideGif() {
         $(".answers").append("<img src=" + choice.pic + ">");
         choiceArr.push(choice);
-        questions.splice(index,1);
+        questions.splice(index, 1);
 
-        var hidePicture = setTimeout(function() {
+        var hidePicture = setTimeout(function () {
             $(".answers").empty();
             time = 30;
 
@@ -128,8 +130,8 @@ $(document).ready(function () {
                 $(".trueFalse").append("<p> Correct: " + correct + "</p>")
                 $(".trueFalse").append("<p> Incorrect: " + incorrect + "</p>")
                 $("#reset").show();
-                correct =0;
-                incorrect =0;
+                correct = 0;
+                incorrect = 0;
             }
             //if there are more questions
             else {
@@ -137,14 +139,14 @@ $(document).ready(function () {
                 questionDisplay();
             };
 
-        
+
         }, 3000)
     };
     //create decrementer function that displays time on page
     function decrement() {
         time--;
-        $("#timer").html("Tick Tock! " + time );
-        
+        $("#timer").html("Tick Tock! " + time);
+
 
         if (time === 0) {
             incorrect++;
@@ -162,22 +164,22 @@ $(document).ready(function () {
         clearInterval(intervalid);
     };
 
-   
 
-        
 
-        $("#reset").on("click", function() {
-            $("#reset").hide();
-            $(".answers").empty();
-            $(".questionsDisplay").empty();
-            for (var i =0; i < gameArr.length; i++ ) {
-                questions.push(gameArr[i]);
-            }
-            startTime();
-            questionDisplay();
-            $(".trueFalse").hide();
 
-        });
+
+    $("#reset").on("click", function () {
+        $("#reset").hide();
+        $(".answers").empty();
+        $(".questionsDisplay").empty();
+        for (var i = 0; i < gameArr.length; i++) {
+            questions.push(gameArr[i]);
+        }
+        startTime();
+        questionDisplay();
+        $(".trueFalse").hide();
 
     });
+
+});
 

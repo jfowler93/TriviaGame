@@ -1,18 +1,24 @@
 body {
-    background-image: url("../images/greenman.gif")
+    background-image: url("../images/frankie.jpg")
 }
 
 .jumbotron {
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.329);
     color: white;
 }
 
 #timer {
     font-weight: bolder;
+    font-size: 25px
 
 }
 
 .questionsDisplay {
     font-size: 40px;
     font-family: 'lobster', cursive;
+}
+
+.answers {
+    font-weight: bold;
+    font-size: 20px
 }
